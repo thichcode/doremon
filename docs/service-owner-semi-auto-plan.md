@@ -11,6 +11,7 @@ This document operationalizes the approved approach: **PA2 — Semi-Auto Service
 ### Prioritized services (Top 5)
 1. Jira
 2. Tư vấn kiến trúc dịch vụ (Service Architecture)
+2. Service Architecture Consulting
 3. Service Desk Plus Administration
 4. Zabbix Administration
 5. GitLab Administration
@@ -97,6 +98,7 @@ New -> Triaged -> In Progress -> Pending User/Vendor -> Resolved -> Closed
 - L2: workflow/scheme deep fixes, integrations, advanced configs.
 
 ## Tư vấn kiến trúc dịch vụ (Service Architecture)
+## Service Architecture Consulting
 - L1: collect structured requirements (NFR, traffic, dependencies).
 - L2: architecture recommendation with trade-offs.
 
