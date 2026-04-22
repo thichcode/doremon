@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "owner_model": {
+    "resolver_tiers": ["L1", "L2"],
+    "itil_types": ["Incident", "ServiceRequest", "Problem", "Change", "Access"]
+  },
+  "prioritized_services": [
+    {"id":"jira_admin","name":"Jira Administration","queue":"Q_JIRA_ADMIN","resolver_group_l1":"L1_PLATFORM","resolver_group_l2":"L2_JIRA"},
+    {"id":"architecture_consulting","name":"TuVanKienTrucDichVu","queue":"Q_ARCH_CONSULT","resolver_group_l1":"L1_PLATFORM","resolver_group_l2":"L2_ARCH"},
+    {"id":"sdp_admin","name":"ServiceDeskPlus Administration","queue":"Q_SDP_ADMIN","resolver_group_l1":"L1_ITSM","resolver_group_l2":"L2_ITSM"},
+    {"id":"zabbix_admin","name":"Zabbix Administration","queue":"Q_ZABBIX_ADMIN","resolver_group_l1":"L1_OBS","resolver_group_l2":"L2_OBS"},
+    {"id":"gitlab_admin","name":"GitLab Administration","queue":"Q_GITLAB_ADMIN","resolver_group_l1":"L1_DEVOPS","resolver_group_l2":"L2_DEVOPS"}
+  ]
+}

@@ -191,3 +191,5 @@ When the above are provided, replace temporary defaults and freeze v1.0 operatin
 
 ## 12) Reference SOP package
 - Detailed copy-paste SOP for each prioritized service is available at `docs/service-owner-sop-servicedeskplus.md`.
+
+- Production implementation artifacts are available under `production/` (machine-readable configs + validator script).
