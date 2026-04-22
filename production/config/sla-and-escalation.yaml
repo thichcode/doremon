@@ -1,0 +1,46 @@
+version: 1
+status: draft_until_official_values_provided
+priority_matrix:
+  P1:
+    first_response_minutes: 15
+    resolve_target_minutes: 240
+  P2:
+    first_response_minutes: 30
+    resolve_target_minutes: 480
+  P3:
+    first_response_minutes: 240
+    resolve_target_minutes: 960
+  P4:
+    first_response_minutes: 480
+    resolve_target_minutes: 2400
+escalation_policy:
+  time_based:
+    - priority: P1
+      trigger_after_minutes: 10
+      action: escalate_to_L2
+    - priority: P2
+      trigger_at_sla_consumed_percent: 50
+      action: escalate_to_L2
+    - priority: P3
+      trigger_at_sla_consumed_percent: 80
+      action: notify_owner_and_update_user
+    - priority: P4
+      trigger_at_sla_consumed_percent: 80
+      action: notify_owner_and_update_user
+  immediate_conditions:
+    - security_or_compliance_risk
+    - production_data_risk
+    - multi_team_impact
+    - repeated_incident_3_in_30_days
+csat:
+  enabled: true
+  trigger_statuses: [Resolved, Closed]
+  questions:
+    - key: overall_satisfaction
+      scale: 1-5
+    - key: response_speed
+      scale: 1-5
+    - key: resolution_clarity
+      scale: 1-5
+    - key: fully_resolved
+      scale: yes-no
