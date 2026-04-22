@@ -27,3 +27,6 @@ class ConfigLoader:
 
     def response_templates(self) -> dict[str, Any]:
         return self.load_json("templates/response-templates.json")
+    def sdp_integration(self) -> dict[str, Any]:
+        return self.load_json("config/sdp-integration.json")
+

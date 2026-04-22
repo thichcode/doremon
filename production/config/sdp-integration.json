@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "base_url_env": "SDP_BASE_URL",
+  "token_env": "SDP_AUTHTOKEN",
+  "timeout_seconds": 30,
+  "resources": {
+    "priority_rules": {"path": "/api/v3/servicedesk/priority-rules", "method": "PUT"},
+    "assignment_rules": {"path": "/api/v3/servicedesk/assignment-rules", "method": "PUT"},
+    "escalation_policy": {"path": "/api/v3/servicedesk/escalation-policy", "method": "PUT"},
+    "service_sop": {"path": "/api/v3/servicedesk/service-sop", "method": "PUT"},
+    "response_templates": {"path": "/api/v3/servicedesk/response-templates", "method": "PUT"}
+  }
+}
