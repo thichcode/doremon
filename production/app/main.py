@@ -39,6 +39,7 @@ def cmd_build_payload(loader: ConfigLoader, out: Path) -> int:
         return 1
 
     payload = _build_full_payload(loader)
+    payload = build_sdp_payload(loader.services(), loader.sla_and_escalation(), loader.sop_map())
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"Payload written: {out}")

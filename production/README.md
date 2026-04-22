@@ -5,6 +5,7 @@ Bộ này hiện thực hóa PA2 ở mức app chạy được trên **1 branch*
 - Mapping SOP theo từng service ưu tiên.
 - Bộ template phản hồi user.
 - CLI app để validate config, render template, build payload và **apply trực tiếp sang Service Desk Plus API**.
+- CLI app để validate config, render template, và build payload cho Service Desk Plus.
 
 ## Cấu trúc
 - `app/main.py`: entrypoint CLI.
@@ -48,3 +49,9 @@ Khi apply thật (không dry-run), app sẽ:
 2. Lưu snapshot vào `production/out/backups/sdp-backup-*.json`.
 3. Apply resource theo payload.
 4. Nếu có lỗi giữa chừng, tự rollback bằng snapshot đã lưu.
+python3 -m unittest production.tests.test_app
+```
+
+## Ghi chú vận hành
+- Các giá trị SLA/escalation hiện là baseline để chạy ngay.
+- Khi có file MD chính thức từ bạn, cập nhật lại JSON trong `config/`, chạy `validate`, rồi build lại payload.
