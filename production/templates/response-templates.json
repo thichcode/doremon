@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "templates": {
+    "acknowledge": "Ticket #[TicketID] đã được tiếp nhận với mức ưu tiên [Priority].\nPhân loại: [ITILType] | Dịch vụ: [Service].\nCập nhật tiếp theo trước [ETA].",
+    "request_more_info": "Để xử lý chính xác, vui lòng bổ sung: [logs/screenshot/time_range/affected_users].",
+    "progress_update": "Hiện trạng: [Status]. Hành động đang thực hiện: [Action]. ETA cập nhật tiếp: [ETA].",
+    "resolution_close": "Ticket đã được xử lý bằng: [Solution].\nVui lòng xác nhận trong [X] ngày trước khi hệ thống tự động đóng."
+  }
+}
