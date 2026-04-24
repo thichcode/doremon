@@ -27,6 +27,12 @@ class ConfigLoader:
 
     def response_templates(self) -> dict[str, Any]:
         return self.load_json("templates/response-templates.json")
+
+    def sdp_integration(self) -> dict[str, Any]:
+        return self.load_json("config/sdp-integration.json")
+
+    def policy_rules(self) -> dict[str, Any]:
+        return self.load_json("config/policy-rules.json")
     def sdp_integration(self) -> dict[str, Any]:
         return self.load_json("config/sdp-integration.json")
 

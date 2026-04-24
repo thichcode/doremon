@@ -1,0 +1,9 @@
+[
+  {"key": "change_request", "required": true, "value": "CHG-100"},
+  {"key": "rollback_plan", "required": true, "value": "rollback attached"},
+  {"key": "validation_evidence", "required": true, "value": "qa checks passed"},
+  {"key": "owner", "required": true, "value": "platform-owner"},
+  {"key": "monitoring_plan", "required": false, "value": "dashboard link"},
+  {"key": "support_readiness", "required": false, "value": "oncall acknowledged"},
+  {"key": "risk_register", "required": false, "value": "risk table v1"}
+]

@@ -8,6 +8,10 @@ from pathlib import Path
 import sys
 
 from production.app.config_loader import ConfigLoader
+from production.app.core.mock_connector import InMemoryConnector
+from production.app.core.models import EvidenceItem, SourceRecord
+from production.app.core.policy_engine import PolicyEngine
+from production.app.core.source_registry import SourceRegistry
 from production.app.payload_builder import build_sdp_payload
 from production.app.sdp_client import SDPClient
 from production.app.validator import validate_all
@@ -28,6 +32,81 @@ def _build_full_payload(loader: ConfigLoader) -> dict:
     payload = build_sdp_payload(loader.services(), loader.sla_and_escalation(), loader.sop_map())
     payload["response_templates"] = loader.response_templates().get("templates", {})
     return payload
+
+
+def _build_demo_registry() -> SourceRegistry:
+    registry = SourceRegistry()
+    registry.register(
+        InMemoryConnector(
+            name="tickets",
+            records=[
+                SourceRecord("t1", "ticket", "change request CHG-100", "rollback plan attached"),
+                SourceRecord("t2", "ticket", "incident INC-20", "monitoring alert for jira"),
+            ],
+        )
+    )
+    registry.register(
+        InMemoryConnector(
+            name="docs",
+            records=[
+                SourceRecord("d1", "doc", "security policy", "policy for privileged changes"),
+                SourceRecord("d2", "doc", "runbook", "validation evidence checklist"),
+            ],
+        )
+    )
+    return registry
+
+
+def cmd_core_list_sources() -> int:
+    registry = _build_demo_registry()
+    print(json.dumps({"sources": registry.list_sources(), "health": registry.health_report()}, indent=2))
+    return 0
+
+
+def cmd_core_search(query: str, limit_per_source: int) -> int:
+    registry = _build_demo_registry()
+    results = registry.search_all(query=query, limit_per_source=limit_per_source)
+    data = [
+        {
+            "source_id": r.source_id,
+            "source_type": r.source_type,
+            "title": r.title,
+            "content": r.content,
+            "metadata": r.metadata,
+        }
+        for r in results
+    ]
+    print(json.dumps({"query": query, "count": len(data), "results": data}, ensure_ascii=False, indent=2))
+    return 0
+
+
+def cmd_core_evaluate_evidence(loader: ConfigLoader, evidence_file: Path) -> int:
+    raw = json.loads(evidence_file.read_text(encoding="utf-8"))
+    evidence = [
+        EvidenceItem(
+            key=item["key"],
+            required=bool(item.get("required", False)),
+            value=item.get("value"),
+            source_refs=item.get("source_refs", []),
+        )
+        for item in raw
+    ]
+    engine = PolicyEngine(loader.policy_rules())
+    decision = engine.evaluate(evidence)
+    print(
+        json.dumps(
+            {
+                "ready": decision.ready,
+                "score": decision.score,
+                "missing_required": decision.missing_required,
+                "warnings": decision.warnings,
+                "approval_conditions": decision.approval_conditions,
+            },
+            ensure_ascii=False,
+            indent=2,
+        )
+    )
+    return 0 if decision.ready else 2
 
 
 def cmd_build_payload(loader: ConfigLoader, out: Path) -> int:
@@ -121,6 +200,15 @@ def build_parser() -> argparse.ArgumentParser:
     p_apply.add_argument("--backup-dir", default="production/out/backups", help="backup directory")
     p_apply.add_argument("--dry-run", action="store_true", help="skip API calls")
 
+    sub.add_parser("core-list-sources", help="list registered sources and health report")
+
+    p_search = sub.add_parser("core-search", help="search across registered sources")
+    p_search.add_argument("--query", required=True)
+    p_search.add_argument("--limit-per-source", type=int, default=10)
+
+    p_eval = sub.add_parser("core-evaluate-evidence", help="evaluate evidence with policy engine")
+    p_eval.add_argument("--input", required=True, help="path to evidence json list")
+
     return parser
 
 
@@ -137,6 +225,12 @@ def main(argv: list[str] | None = None) -> int:
         return cmd_render_template(loader, args.template, args.set)
     if args.command == "apply-sdp-config":
         return cmd_apply_sdp(loader, args.base_url, args.token, args.dry_run, Path(args.backup_dir))
+    if args.command == "core-list-sources":
+        return cmd_core_list_sources()
+    if args.command == "core-search":
+        return cmd_core_search(args.query, args.limit_per_source)
+    if args.command == "core-evaluate-evidence":
+        return cmd_core_evaluate_evidence(loader, Path(args.input))
 
     parser.print_help()
     return 1
