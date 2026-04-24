@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "minimum_score": 80,
+  "required_keys": [
+    "change_request",
+    "rollback_plan",
+    "validation_evidence",
+    "owner"
+  ],
+  "warning_keys": [
+    "monitoring_plan",
+    "support_readiness",
+    "risk_register"
+  ]
+}

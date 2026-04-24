@@ -1,0 +1,63 @@
+version: 1
+services:
+  jira_admin:
+    itil_mapping:
+      outage_wide: Incident
+      access_request: ServiceRequest
+      repeated_same_root_cause: Problem
+      workflow_change: Change
+    l1_steps:
+      - identify_impacted_users_and_projects
+      - check_jira_health
+      - verify_permission_groups
+      - collect_evidence
+      - apply_standard_workaround
+    escalate_if:
+      - impact_more_than_one_team
+      - needs_system_admin_privileges
+      - complex_workflow_or_integration_issue
+  architecture_consulting:
+    required_intake_fields:
+      - business_goal
+      - current_pain_point
+      - expected_users_traffic
+      - availability_target
+      - rto_rpo
+      - security_compliance
+      - dependencies
+      - timeline
+    l1_steps:
+      - collect_intake
+      - validate_missing_info
+      - tag_priority
+      - handoff_to_l2
+  sdp_admin:
+    change_types: [Standard, Normal, Emergency]
+    pre_deploy_checklist:
+      - has_change_ticket
+      - has_approval
+      - has_backup
+      - has_rollback_plan
+      - has_stakeholder_notification
+  zabbix_admin:
+    l1_steps:
+      - identify_alert_source
+      - check_agent_proxy_connectivity
+      - check_maintenance_window
+      - correlate_recent_changes
+    l2_steps:
+      - tune_triggers
+      - review_template_inheritance
+      - review_queue_proxy_poller_health
+      - optimize_notification_rules
+  gitlab_admin:
+    l1_steps:
+      - identify_impacted_repo_branch
+      - collect_pipeline_job_commit_logs
+      - verify_project_role_permissions
+      - check_runner_health
+    escalate_if:
+      - runners_offline_broadly
+      - pipelines_failing_multi_projects
+      - registry_or_storage_or_performance_issue
+      - protected_branch_security_policy_issue
