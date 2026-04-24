@@ -33,3 +33,6 @@ class ConfigLoader:
 
     def policy_rules(self) -> dict[str, Any]:
         return self.load_json("config/policy-rules.json")
+    def sdp_integration(self) -> dict[str, Any]:
+        return self.load_json("config/sdp-integration.json")
+
